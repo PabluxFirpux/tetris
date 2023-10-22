@@ -14,8 +14,6 @@ public class Board {
             }
             System.out.println();
         }
-        //TODO: Remove this line
-        System.out.println("=====================================");
     }
 
     public int[][] getBoard() {
