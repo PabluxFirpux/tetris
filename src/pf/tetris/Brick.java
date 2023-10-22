@@ -117,4 +117,13 @@ public class Brick {
     public boolean isFullLeft() {
         return this.xpos == 0;
     }
+
+    public void printBrick() {
+        for (int[] row : this.shape) {
+            for (int cell : row) {
+                System.out.print(cell);
+            }
+            System.out.println();
+        }
+    }
 }

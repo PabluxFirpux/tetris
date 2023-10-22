@@ -18,6 +18,10 @@ public class Board {
         System.out.println("=====================================");
     }
 
+    public int[][] getBoard() {
+        return board;
+    }
+
     public void addBrick(Brick brick) {
         int[][] shape = brick.getShape();
         int colour = brick.getColour();
@@ -32,6 +36,14 @@ public class Board {
             }
             x = brick.getXpos();
             y++;
+        }
+    }
+
+    public void destroyLine(int x) {
+        for (int i = x; i > 0; i--) {
+            for (int j = 0; j < this.board[i].length; j++) {
+                this.board[i][j] = this.board[i-1][j];
+            }
         }
     }
 
@@ -103,6 +115,16 @@ public class Board {
         }
     }
 
+    public void updateBrickDown(Brick brick) {
+        if (!brick.isFullDown() && !isBrickCollidingDown(brick)) {
+            moveBrickDown(brick);
+        }
+    }
+
+    public boolean isBrickDone(Brick brick) {
+        return !(!brick.isFullDown() && !isBrickCollidingDown(brick));
+    }
+
     public boolean isBrickCollidingLeft(Brick brick) {
         removeBrick(brick);
         int[][] shape = brick.getShape();
@@ -126,7 +148,7 @@ public class Board {
     }
 
     public void setBrickLeft(Brick brick) {
-        while (!brick.isFullLeft() && !isBrickCollidingLeft(brick)) {
+        if (!brick.isFullLeft() && !isBrickCollidingLeft(brick)) {
             moveBrickLeft(brick);
         }
     }
@@ -154,7 +176,7 @@ public class Board {
     }
 
     public void setBrickRight(Brick brick) {
-        while (!brick.isFullRight() && !isBrickCollidingRight(brick)) {
+        if (!brick.isFullRight() && !isBrickCollidingRight(brick)) {
             moveBrickRight(brick);
         }
     }
