@@ -12,12 +12,15 @@ public class Controller {
 
     private int score;
 
+    private Game game;
+
     public Controller() {
         this.board = new Board();
         this.currentBrick = new Brick();
         this.nextBrick = new Brick();
         this.score = 0;
         start();
+        game = new Game(board);
     }
 
     public void start() {
@@ -30,6 +33,7 @@ public class Controller {
         nextBrick = new Brick();
         board.addBrick(currentBrick);
         this.score += 10;
+        update();
     }
 
     public void update() {
@@ -46,6 +50,7 @@ public class Controller {
         System.out.println("Score: " + this.score);
         System.out.println("Next brick: ");
         currentBrick.printBrick();
+        //game.refresh(board);
     }
 
     public void checkForLoss() {
@@ -65,6 +70,7 @@ public class Controller {
     }
 
     public void checkForCompleteLines() {
+        this.board.removeBrick(currentBrick);
         int[][] board = this.board.getBoard();
         int destroyedLines = 0;
         for (int i = 0; i < board.length; i++) {
@@ -80,6 +86,7 @@ public class Controller {
             }
         }
         addScoreLines(destroyedLines);
+        this.board.addBrick(currentBrick);
     }
 
     public void addScoreLines(int x) {

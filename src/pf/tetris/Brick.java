@@ -17,7 +17,7 @@ public class Brick {
     }
 
     private int findColour() {
-        return getRandomNumber(1,9);
+        return getRandomNumber(1,8);
     }
 
     private int[][] findShape() {
