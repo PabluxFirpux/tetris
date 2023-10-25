@@ -12,8 +12,8 @@ public class Controller{
 
     private Brick nextBrick;
 
-    //TODO: Implement HOLD
-    //Todo: Implement Start Menu
+    private Brick holdBrick;
+
 
     private int score;
 
@@ -23,22 +23,31 @@ public class Controller{
 
     private int lines;
 
-    private Game game;
+    private Game screen;
+
+    boolean gameRunning;
 
     public Controller() {
+        this.level = 1;
+        this.lines = 0;
+        this.gameRunning = true;
         this.board = new Board();
         this.currentBrick = new Brick();
         this.nextBrick = new Brick();
         this.score = 0;
         this.delay = 2000;
+        screen = new Game(board, this);
         start();
-        game = new Game(board, this);
     }
 
     public void start() {
         board.addBrick(currentBrick);
         javax.swing.Timer timer = new Timer(this.delay, e -> {
             pace();
+            if(!gameRunning) {
+                ((Timer) e.getSource()).stop();
+                screen.getFrame().dispose();
+            }
         });
         timer.start();
     }
@@ -52,18 +61,45 @@ public class Controller{
         update();
     }
 
+    public void changeHold() {
+        this.board.removeBrick(currentBrick);
+        if(holdBrick == null) {
+            holdBrick = currentBrick;
+            currentBrick = nextBrick;
+            nextBrick = new Brick();
+        } else {
+            Brick temp = holdBrick;
+            holdBrick = currentBrick;
+            temp.setXpos(currentBrick.getXpos());
+            temp.setYpos(currentBrick.getYpos());
+            currentBrick = temp;
+        }
+        this.board.addBrick(currentBrick);
+        update();
+    }
+
+    public boolean hasHoldedBrick() {
+        return holdBrick != null;
+    }
+
+    public Brick getHoldBrick() {
+        return holdBrick;
+    }
+
     public void update() {
-        checkForCompleteLines();
-        checkForLoss();
-        board.printBoard();
-        System.out.println("Score: " + this.score);
-        System.out.println("Next brick: ");
-        currentBrick.printBrick();
-        //game.refresh(board);
-        if(lines > 10 && delay > 500) {
-            level++;
-            lines = 0;
-            delay -= 100;
+        if(gameRunning) {
+            checkForCompleteLines();
+            checkForLoss();
+            board.printBoard();
+            System.out.println("Score: " + this.score);
+            System.out.println("Next brick: ");
+            currentBrick.printBrick();
+            //game.refresh(board);
+            if(lines > 10 && delay > 500) {
+                level++;
+                lines = 0;
+                delay -= 100;
+            }
         }
     }
 
@@ -88,8 +124,9 @@ public class Controller{
             }
         }
         if (loss) {
-            System.out.println("You lose");
-            System.exit(0);
+            screen.dispose();
+            gameRunning = false;
+            EndScreen endScreen = new EndScreen(this.score);
         }
         this.board.addBrick(currentBrick);
     }
