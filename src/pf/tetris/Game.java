@@ -35,6 +35,7 @@ public class Game extends JFrame implements KeyListener {
         background.setForeground(Color.BLACK);
         frame.add(background);
         background.setLayout(new BorderLayout());
+        frame.setPreferredSize(new Dimension(900, 900));
 
 
         panel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
@@ -101,6 +102,35 @@ public class Game extends JFrame implements KeyListener {
 
         //GUI Updater
         Timer timer = new Timer(this.delay, e -> {
+            if(controller.hasHoldedBrick()) {
+                int[][] holdShape = controller.getHoldBrick().getShape();
+                JPanel holdPanel = new JPanel();
+                holdPanel.setLayout(new GridLayout(holdShape.length,holdShape[0].length));
+                for (int[] row : holdShape) {
+                    for (int cell : row) {
+                        if (cell == 1) {
+                            holdPanel.add(new JLabel(new ImageIcon(getTile(controller.getHoldBrick().getColour()).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH))));
+                        } else {
+                            holdPanel.add(new JLabel(new ImageIcon(getTile(0).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH))));
+                        }
+                    }
+                }
+                holdPanel.setSize(new Dimension(holdShape.length*30, holdShape[0].length*30));
+                holdPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+                JPanel holdBrickPanel = new JPanel();
+                holdBrickPanel.setLayout(new GridBagLayout());
+                holdBrickPanel.add(new JLabel("Holded brick:"));
+                holdBrickPanel.add(holdPanel);
+                holdBrickPanel.setBackground(Color.BLACK);
+                leftPanel.removeAll();
+                leftPanel.add(holdBrickPanel);
+                leftPanel.revalidate();
+                leftPanel.repaint();
+            }
+
+
+
+
             int[][] oardArray = board.getBoard();
             panel.removeAll();
             for (int i = 0; i < height; i++) {
@@ -150,6 +180,10 @@ public class Game extends JFrame implements KeyListener {
         frame.revalidate();
         frame.repaint();
 
+    }
+
+    public JFrame getFrame() {
+        return frame;
     }
 
     public int getDelay() {
@@ -212,6 +246,9 @@ public class Game extends JFrame implements KeyListener {
             case KeyEvent.VK_ESCAPE:
                 System.exit(0);
                 break;
+                case KeyEvent.VK_SPACE:
+                    controller.changeHold();
+                    break;
             default:
                 break;
         }

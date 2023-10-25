@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class main {
     public static void main(String[] args) {
         //TODO: Añadir pantalla de inicio, de derrota, highscores y cambiar el fondo a algo un pelin mas lindo
-        Controller controller = new Controller();
+        MainScreen mainScreen = new MainScreen();
         //cliGame(controller);
     }
 
