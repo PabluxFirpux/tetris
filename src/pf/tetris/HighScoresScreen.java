@@ -11,6 +11,9 @@ public class HighScoresScreen extends JFrame {
         JLabel highScoresLabel = new JLabel("High Scores:");
         add(highScoresLabel);
 
+        JList<String> highScoresList = new JList<String>(HighScores.getScoresString());
+        add(highScoresList);
+
         JButton backButton = new JButton("Back to Main Menu");
         backButton.setAlignmentX(CENTER_ALIGNMENT);
         add(backButton);

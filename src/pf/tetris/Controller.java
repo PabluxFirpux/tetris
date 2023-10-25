@@ -14,8 +14,6 @@ public class Controller{
 
     private Brick holdBrick;
 
-    //TODO: Implement HOLD
-    //Todo: Implement Start Menu
 
     private int score;
 

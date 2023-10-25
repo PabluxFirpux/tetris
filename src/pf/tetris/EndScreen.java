@@ -25,6 +25,8 @@ public class EndScreen extends JFrame {
         JButton quitButton = new JButton("Quit");
         quitButton.setAlignmentX(CENTER_ALIGNMENT);
         add(quitButton);
+        setIconImage(new ImageIcon("resources/images/GAMEOVER.jpg").getImage());
+
 
        backButton.addActionListener(e -> {
             dispose();
@@ -41,14 +43,14 @@ public class EndScreen extends JFrame {
         });
 
         setVisible(true);
+        checkIfHighScore();
 
     }
 
     public void checkIfHighScore() {
-        HighScores highScores = new HighScores();
-        if (score > highScores.getLowestScore()) {
+        if (score > HighScores.getLowestScore()) {
             name = JOptionPane.showInputDialog("You got a high score! Enter your name:");
-            highScores.addScore(name, score);
+            HighScores.addScore(name, score);
         }
     }
 }

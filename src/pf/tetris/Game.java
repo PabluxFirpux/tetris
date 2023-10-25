@@ -163,24 +163,7 @@ public class Game extends JFrame implements KeyListener {
         });
         timer.start();
     }
-//TODO: Averiguar porque la funcion refresh es inutil
-    public void refresh(Board board){
-        int[][] boardArray = board.getBoard();
-        int width = boardArray[0].length;
-        int height = boardArray.length;
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(height, width));
-        for (int i = 0; i < height; i++) {
-            for (int n = 0; n < width; n++) {
-                panel.add(new JLabel(new ImageIcon(getTile(boardArray[i][n]).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH))));
-            }
-        }
-        panel.setSize(new Dimension(160, 320));
-        frame.add(panel, BorderLayout.CENTER);
-        frame.revalidate();
-        frame.repaint();
 
-    }
 
     public JFrame getFrame() {
         return frame;
